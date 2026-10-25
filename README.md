@@ -66,8 +66,14 @@ Si ya tienes un Chromium instalado: `PW_CHROMIUM_PATH=/ruta/chromium npm run tes
 
 ### 1. Supabase (plan Free)
 1. Crea un proyecto en [supabase.com](https://supabase.com) (región `us-east-1` es la más cercana a Honduras).
-2. Aplica el esquema: `npx supabase link --project-ref <ref>` y `npx supabase db push`.
-   Luego ejecuta `supabase/seed.sql` en el SQL Editor (o carga tus datos desde el panel).
+2. Abre **SQL Editor → New query**, pega todo `supabase/produccion/instalacion-completa.sql`
+   y presiona **Run**. Crea las tablas, las protecciones, los datos base del consultorio y datos de
+   **demo** (15 pacientes ficticios, ~170 turnos alrededor de la fecha actual y un bloqueo de agenda).
+   - ✏️ Antes de ejecutarlo cambia el email y la contraseña del admin (sección DEMO, al inicio del bloque `do $$`).
+   - Paciente de prueba para ver la app como paciente: `paciente@demo.invalid` / `Demo2026!`.
+   - Antes de abrir al público, borra la demo con `supabase/demo-borrar.sql` (conserva servicios y configuración)
+     y crea el admin real con `npm run create-admin`.
+   - Si cambias migraciones o datos, regenera el archivo con `npm run db:setup-sql`.
 3. **Authentication → URL Configuration**: *Site URL* = `https://tu-sitio.netlify.app`; agrega
    `https://tu-sitio.netlify.app/**` a *Redirect URLs*.
 4. **Authentication → Email Templates**: pega el contenido de `supabase/templates/confirmation.html`

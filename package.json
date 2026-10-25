@@ -13,7 +13,8 @@
     "db:start": "supabase start -x studio,realtime,storage-api,imgproxy,edge-runtime,logflare,vector,postgres-meta,supavisor",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "create-admin": "tsx scripts/create-admin.ts"
+    "create-admin": "tsx scripts/create-admin.ts",
+    "db:setup-sql": "node scripts/build-setup-sql.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",

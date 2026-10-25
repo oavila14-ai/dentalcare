@@ -25,7 +25,8 @@ export async function sendAppointmentEmail(opts: {
   props: AppointmentEmailProps;
   ics?: string;
 }) {
-  if (!opts.to || opts.to.endsWith(`@${NO_EMAIL_DOMAIN}`)) return;
+  // ".invalid" es un dominio reservado (RFC 2606): pacientes sin email y datos de demo.
+  if (!opts.to || opts.to.toLowerCase().endsWith(".invalid")) return;
   const t = getTransporter();
   if (!t) {
     console.warn(`[mailer] SMTP no configurado; no se envió "${opts.subject}" a ${opts.to}`);
