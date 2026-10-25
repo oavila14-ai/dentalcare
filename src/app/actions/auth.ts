@@ -23,7 +23,7 @@ function safeNext(next: unknown, fallback = "/turnos") {
   return typeof next === "string" && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
 }
 
-export async function signUpAction(input: unknown): Promise<ActionResult<{ email: string }>> {
+export async function signUpAction(input: unknown): Promise<ActionResult<{ email: string; signedIn: boolean }>> {
   const parsed = signUpSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Revisa los datos", fieldErrors: fieldErrors(parsed.error) };
   const d = parsed.data;
@@ -62,7 +62,9 @@ export async function signUpAction(input: unknown): Promise<ActionResult<{ email
     return { ok: false, error: "Ese email ya está registrado", fieldErrors: { email: "Ya existe una cuenta con este email. Inicia sesión." } };
   }
 
-  return { ok: true, data: { email: d.email } };
+  // Si en Supabase está desactivado "Confirm email", el usuario ya queda con sesión iniciada.
+  if (data.session) revalidatePath("/", "layout");
+  return { ok: true, data: { email: d.email, signedIn: Boolean(data.session) } };
 }
 
 export async function signInAction(input: unknown, next?: string): Promise<ActionResult> {

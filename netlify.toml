@@ -1,5 +1,6 @@
 [build]
-  command = "npm run build"
+  # Prepara la base de datos (solo lo que falte) y luego compila.
+  command = "npm run setup-db && npm run build"
   publish = ".next"
 
 [build.environment]

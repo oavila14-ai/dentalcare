@@ -14,7 +14,8 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "create-admin": "tsx scripts/create-admin.ts",
-    "db:setup-sql": "node scripts/build-setup-sql.mjs"
+    "db:setup-sql": "node scripts/build-setup-sql.mjs",
+    "setup-db": "node scripts/setup-db.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",

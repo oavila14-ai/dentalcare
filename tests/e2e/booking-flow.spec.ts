@@ -47,10 +47,9 @@ test("paciente reserva y el admin confirma", async ({ page, browser }, info) => 
   await page.locator("#password").fill("Prueba1234");
   await page.getByRole("checkbox").click();
   await page.getByRole("button", { name: "Crear cuenta" }).click();
-  await expect(page.getByText("Revisa tu correo")).toBeVisible();
-
-  // 2. Confirmación por email → llega directo al wizard
-  await page.goto(await confirmationLink(email));
+  // 2. Con "Confirm email" activo hay que abrir el enlace del correo; si está desactivado, entra directo.
+  await expect(page.getByText("Revisa tu correo").or(page.getByText("¿Para qué servicio es tu turno?"))).toBeVisible();
+  if (await page.getByText("Revisa tu correo").isVisible()) await page.goto(await confirmationLink(email));
   await expect(page).toHaveURL(/\/turnos\/nuevo/);
 
   // 3. Solicitud de turno

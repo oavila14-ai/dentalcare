@@ -62,6 +62,24 @@ npm run lint && npm run typecheck
 
 Si ya tienes un Chromium instalado: `PW_CHROMIUM_PATH=/ruta/chromium npm run test:e2e`.
 
+## Publicar en 3 pasos (camino rápido)
+
+1. **Supabase** (supabase.com → New project). Copia de *Project Settings → API Keys* la URL, la
+   *Publishable key* y la *Secret key*, y del botón **Connect** la cadena *Transaction pooler*
+   (reemplaza `[YOUR-PASSWORD]`). En *Authentication → Sign In / Providers → Email* desactiva
+   **Confirm email** (así los pacientes entran sin esperar un correo; actívalo cuando configures Gmail).
+2. **Netlify** (netlify.com → Add new project → Import from GitHub → `dentalcare`). Antes de
+   *Deploy*, agrega estas variables:
+   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`,
+   `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `SEED_DEMO=true`, `CRON_SECRET` (cualquier texto largo)
+   y `NEXT_PUBLIC_SITE_URL` (la URL que te asigne Netlify; si aún no la sabes, agrégala y vuelve a desplegar).
+   En el primer deploy se crean solas las tablas, el administrador y los datos de demo.
+3. **Supabase → Authentication → URL Configuration**: *Site URL* = tu URL de Netlify.
+
+Listo: entra a `https://tu-sitio.netlify.app/login` con `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
+Paciente de demo: `paciente@demo.invalid` / `Demo2026!`. Los pasos de abajo (Gmail, plantillas,
+backups) se pueden hacer después.
+
 ## Puesta en producción (gratis)
 
 ### 1. Supabase (plan Free)

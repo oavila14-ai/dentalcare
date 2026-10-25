@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,7 @@ import { PasswordInput } from "./password-input";
 import { ProfileFields } from "./profile-fields";
 
 export function SignUpForm() {
+  const router = useRouter();
   const [error, setError] = useState<string>();
   const [sentTo, setSentTo] = useState<string>();
   const {
@@ -34,7 +36,10 @@ export function SignUpForm() {
   const onSubmit = handleSubmit(async (values) => {
     setError(undefined);
     const res = await signUpAction(values);
-    if (res.ok) return setSentTo(res.data?.email);
+    if (res.ok) {
+      if (res.data?.signedIn) return router.replace("/turnos/nuevo");
+      return setSentTo(res.data?.email);
+    }
     setError(res.error);
     for (const [field, message] of Object.entries(res.fieldErrors ?? {})) {
       setFieldError(field as keyof typeof values, { message });
